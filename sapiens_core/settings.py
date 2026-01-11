@@ -17,6 +17,7 @@ import os
 BASE_DIR = Path(__file__).resolve().parent.parent
 MEDIA_URL = '/media/'
 MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+AUTH_USER_MODEL = 'sapiens_users.User'
 
 
 # Quick-start development settings - unsuitable for production
@@ -42,7 +43,7 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'django_extensions',
     'rest_framework',
-    'sapiens_api',
+    'sapiens_users',
     
 ]
 
@@ -81,8 +82,14 @@ WSGI_APPLICATION = 'sapiens_core.wsgi.application'
 
 DATABASES = {
     'default': {
-        'ENGINE': 'django.db.backends.sqlite3',
-        'NAME': BASE_DIR / 'db.sqlite3',
+        'ENGINE': 'django.db.backends.postgresql',
+        'NAME': 'Sapiens',
+        'USER': 'postgres',
+        'PASSWORD': 'Hakal2004*',
+        'HOST':'localhost',
+        'PORT': '5432',
+        
+        
     }
 }
 

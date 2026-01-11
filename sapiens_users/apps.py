@@ -2,4 +2,4 @@ from django.apps import AppConfig
 
 
 class SapiensApiConfig(AppConfig):
-    name = 'sapiens_api'
+    name = 'sapiens_users'
