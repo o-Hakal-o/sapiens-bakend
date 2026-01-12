@@ -44,6 +44,8 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'sapiens_users',
+    'rest_framework.authtoken',
+    
     
 ]
 
