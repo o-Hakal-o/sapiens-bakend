@@ -2,32 +2,22 @@ from rest_framework import serializers
 from .models import User
 from django.contrib.auth import authenticate
 
-class StudentRegister(serializers.ModelSerializer):
-    password = serializers.CharField(write_only=True)
-
+class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = [
-            'Nombre_de_Usuario', # 1. Lo que el usuario ve como su nombre
-            'gmail',             # 2. Su correo
-            'password',          # 3. Su clave
-        ]
+        fields = ['id', 'Nombre_de_Usuario', 'gmail', 'rol']
+        read_only_fields = ['gmail', 'rol'] # No permitimos cambiar correo ni rol por seguridad
+class StudentRegisterSerializer(serializers.ModelSerializer):
+    password = serializers.CharField(write_only=True)
+    class Meta:
+        model = User
+        fields = ['Nombre_de_Usuario', 'gmail', 'password']
 
     def create(self, validated_data):
-        # 1. Extraemos la clave
-        raw_password = validated_data.pop('password')
-        
-        # 2. TRUCO: Copiamos el gmail al campo username de Django
-        # Así cumplimos con Django sin pedirle un dato extra al usuario
+        # Usamos el gmail como username de Django
         validated_data['username'] = validated_data.get('gmail')
-        
-        # 3. Forzamos el rol
         validated_data['rol'] = User.Role.ESTUDIANTE
-        
-        # 4. Creamos y encriptamos
-        user = User(**validated_data)
-        user.set_password(raw_password)
-        user.save()
+        user = User.objects.create_user(**validated_data)
         return user
     
 class LoginSerializer(serializers.Serializer):
@@ -35,16 +25,13 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        email = data.get('gmail')
-        password = data.get('password')
+        user = authenticate(username=data.get('gmail'), password=data.get('password'))
+        if user and user.is_active:
+            return user
+        raise serializers.ValidationError("Credenciales incorrectas")
 
-        if email and password:
-            # IMPORTANTE: Aquí se usa username=email porque USERNAME_FIELD es 'gmail'
-            user = authenticate(username=email, password=password)
-            if not user:
-                raise serializers.ValidationError("Correo o contraseña incorrectos.")
-        else:
-            raise serializers.ValidationError("Debe proveer correo y contraseña.")
-
-        data['user'] = user
-        return data
+class UserProfileSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = User
+        fields = ['id', 'Nombre_de_Usuario', 'gmail', 'rol']
+        read_only_fields = ['gmail', 'rol']
