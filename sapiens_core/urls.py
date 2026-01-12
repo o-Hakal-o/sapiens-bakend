@@ -22,5 +22,7 @@ urlpatterns = [
     path('admin/', admin.site.urls), 
     
     # Ahora 'include' funcionará correctamente
-    path('api/', include('sapiens_users.urls')), 
+    path('api/', include('sapiens_users.urls')),
+    path('api/', include('sapiens_articulos.urls')), 
+     
 ]
