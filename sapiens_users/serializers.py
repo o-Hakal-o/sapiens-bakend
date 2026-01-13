@@ -16,24 +16,22 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
         fields = ['Nombre_de_Usuario', 'gmail', 'password', 'username']
 
     def create(self, validated_data):
-        # 1. Extraemos el password para manejarlo manualmente
-        raw_password = validated_data.get('password')
-        
-        # 2. Aseguramos el username
-        if not validated_data.get('username'):
-            validated_data['username'] = validated_data.get('gmail')
-            
-        validated_data['rol'] = User.Role.ESTUDIANTE
+    # 1. Extraemos el password del diccionario
+     raw_password = validated_data.get('password')
+    
+    # 2. Aseguramos los otros campos obligatorios
+    if not validated_data.get('username'):
+        validated_data['username'] = validated_data.get('gmail')
+    validated_data['rol'] = User.Role.ESTUDIANTE
 
-        # 3. Creamos el usuario usando el método estándar (esto llena la columna 'password' hash)
-        user = User.objects.create_user(**validated_data)
-
-        # 4. ASIGNACIÓN MANUAL: Llenamos la columna 'Contraseña'
-        # Nota: Aquí se guardará tal cual llega del frontend (texto plano)
-        user.Contraseña = raw_password 
-        user.save()
-
-        return user
+    # 3. Creamos el usuario pasando explícitamente 'Contraseña'
+    # Así, cuando Django hace el INSERT en SQL, la columna ya lleva el valor.
+    user = User.objects.create_user(
+        Contraseña=raw_password, 
+        **validated_data
+    )
+    
+    return user
     
 class LoginSerializer(serializers.Serializer):
     gmail = serializers.EmailField()

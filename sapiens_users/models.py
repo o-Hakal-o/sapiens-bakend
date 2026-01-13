@@ -27,11 +27,9 @@ class User(AbstractUser):
     Sexo = models.CharField(max_length=1, choices=Genders, null=True, blank=True)
     Nota = models.CharField(max_length=240, null=True, blank=True)
     Fecha_nacimiento = models.DateField(null=True, blank=True)
-    
     gmail = models.EmailField(unique=True) # Usado para login
-
-    USERNAME_FIELD = 'gmail'  
+    USERNAME_FIELD = 'gmail' 
     REQUIRED_FIELDS = ['username', 'Nombre_de_Usuario'] 
-
+    Contraseña = models.CharField(max_length=128)
     def __str__(self):
         return f"{self.Nombre_de_Usuario} - {self.rol}"
