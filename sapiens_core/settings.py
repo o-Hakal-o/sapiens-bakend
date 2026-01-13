@@ -52,6 +52,7 @@ INSTALLED_APPS = [
     'django_extensions',
     'rest_framework',
     'sapiens_users',
+    'corsheaders',
     'sapiens_articulos',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
@@ -60,6 +61,7 @@ INSTALLED_APPS = [
 ]
 
 MIDDLEWARE = [
+    'corsheaders.middleware.CorsMiddleware',
     'django.middleware.security.SecurityMiddleware',
     'whitenoise.middleware.WhiteNoiseMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
