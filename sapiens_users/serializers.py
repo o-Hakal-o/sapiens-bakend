@@ -1,11 +1,12 @@
 from rest_framework import serializers
 from .models import User
 from django.contrib.auth import authenticate
+from rest_framework_simplejwt.tokens import RefreshToken
 
 class UserProfileSerializer(serializers.ModelSerializer):
     class Meta:
         model = User
-        fields = ['id', 'Nombre_de_Usuario', 'gmail', 'rol']
+        fields = ['id', 'Nombre_de_Usuario', 'gmail', 'rol' ,]
         read_only_fields = ['gmail', 'rol'] # No permitimos cambiar correo ni rol por seguridad
 class StudentRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
