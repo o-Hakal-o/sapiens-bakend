@@ -38,7 +38,7 @@ SECRET_KEY = 'django-insecure-hb*^)#e%!_mfba1di3lsm@%eu@0z0mf6ig+o#27_hz!z38#rdb
 DEBUG = True
 
 ALLOWED_HOSTS = [os.environ.get('RENDER_EXTERNAL_HOSTNAME'), 'localhost', '127.0.0.1']
-
+CORS_ALLOW_ALL_ORIGINS = True
 
 # Application definition
 
