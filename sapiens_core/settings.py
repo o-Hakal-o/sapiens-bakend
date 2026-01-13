@@ -54,6 +54,7 @@ INSTALLED_APPS = [
     'sapiens_users',
     'sapiens_articulos',
     'rest_framework.authtoken',
+    'rest_framework_simplejwt',
     
     
 ]
