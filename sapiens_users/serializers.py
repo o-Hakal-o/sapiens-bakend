@@ -9,7 +9,6 @@ class UserProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ['gmail', 'rol']
 
 class StudentRegisterSerializer(serializers.ModelSerializer):
-    # Definimos 'password' como write_only para que no se devuelva en el JSON
     password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -17,15 +16,23 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
         fields = ['Nombre_de_Usuario', 'gmail', 'password', 'username']
 
     def create(self, validated_data):
-        # Si no envían username, usamos el gmail
+        # 1. Extraemos el password para manejarlo manualmente
+        raw_password = validated_data.get('password')
+        
+        # 2. Aseguramos el username
         if not validated_data.get('username'):
             validated_data['username'] = validated_data.get('gmail')
             
         validated_data['rol'] = User.Role.ESTUDIANTE
-        
-        # create_user tomará el campo 'password' de validated_data 
-        # automáticamente y lo encriptará.
+
+        # 3. Creamos el usuario usando el método estándar (esto llena la columna 'password' hash)
         user = User.objects.create_user(**validated_data)
+
+        # 4. ASIGNACIÓN MANUAL: Llenamos la columna 'Contraseña'
+        # Nota: Aquí se guardará tal cual llega del frontend (texto plano)
+        user.Contraseña = raw_password 
+        user.save()
+
         return user
     
 class LoginSerializer(serializers.Serializer):
