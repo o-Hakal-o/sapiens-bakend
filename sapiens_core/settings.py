@@ -37,7 +37,7 @@ SECRET_KEY = 'django-insecure-hb*^)#e%!_mfba1di3lsm@%eu@0z0mf6ig+o#27_hz!z38#rdb
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS = [*]
 
 
 # Application definition
@@ -94,8 +94,8 @@ WSGI_APPLICATION = 'sapiens_core.wsgi.application'
 
 DATABASES = {
     'default': dj_database_url.config(
-        # Replace this value with your local database's connection string.
-        default='postgresql://postgres:postgres@localhost:5432/mysite',
+        # Render asigna automáticamente la DATABASE_URL
+        default=os.environ.get('DATABASE_URL', 'postgresql://postgres:postgres@localhost:5432/db_local'),
         conn_max_age=600
     )
 }
