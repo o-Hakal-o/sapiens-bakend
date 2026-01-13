@@ -9,6 +9,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
         read_only_fields = ['gmail', 'rol']
 
 class StudentRegisterSerializer(serializers.ModelSerializer):
+    # Definimos 'password' como write_only para que no se devuelva en el JSON
     password = serializers.CharField(write_only=True)
 
     class Meta:
@@ -16,11 +17,14 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
         fields = ['Nombre_de_Usuario', 'gmail', 'password', 'username']
 
     def create(self, validated_data):
-        # Usamos el gmail como el identificador de username interno de Django
+        # Si no envían username, usamos el gmail
         if not validated_data.get('username'):
             validated_data['username'] = validated_data.get('gmail')
             
         validated_data['rol'] = User.Role.ESTUDIANTE
+        
+        # create_user tomará el campo 'password' de validated_data 
+        # automáticamente y lo encriptará.
         user = User.objects.create_user(**validated_data)
         return user
     
