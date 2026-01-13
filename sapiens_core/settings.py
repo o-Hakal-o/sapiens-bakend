@@ -132,9 +132,9 @@ USE_TZ = True
 
 
 # Static files (CSS, JavaScript, Images)
-STATIC_URL = '/media/'
+STATIC_URL = '/static/'
 # https://docs.djangoproject.com/en/6.0/howto/static-files/
-
+MEDIA_URL = '/media/'
 
 # This production code might break development mode, so we check whether we're in DEBUG mode
 if not DEBUG:
