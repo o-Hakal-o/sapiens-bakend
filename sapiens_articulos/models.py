@@ -27,6 +27,7 @@ class Categoria(models.Model):
 class Comentario(models.Model):
     id_usuario = models.CharField()
     contenido = models.CharField()
+    imagen = models.ImageField(blank=True,null=True,upload_to='media/comentarios')
     articulo = models.ForeignKey("Articulo",on_delete=models.CASCADE)
     
 
