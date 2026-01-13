@@ -13,7 +13,7 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = User
-        fields = ['Nombre_de_Usuario', 'gmail', 'password', 'username']
+        fields = ['Nombre_de_Usuario', 'gmail', 'password',]
 
     def create(self, validated_data):
         # Usamos el gmail como el identificador de username interno de Django
