@@ -22,7 +22,6 @@ class User(AbstractUser):
     id = models.BigAutoField(primary_key=True)
     Nombre_de_Usuario = models.CharField(max_length=24)
     Alias = models.CharField(max_length=14, blank=True, null=True)
-    # Corregido: ruta relativa
     Avatar = models.ImageField(upload_to='avatars/', null=True, blank=True) 
     Sexo = models.CharField(max_length=1, choices=Genders, null=True, blank=True)
     Nota = models.CharField(max_length=240, null=True, blank=True)
