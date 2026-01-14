@@ -3,11 +3,20 @@ from .models import User
 from django.contrib.auth import authenticate
 
 class UserProfileSerializer(serializers.ModelSerializer):
+    # Definimos Avatar como un campo de método para controlar su salida
+    Avatar = serializers.SerializerMethodField()
+
     class Meta:
         model = User
-        fields = [ 'Nombre_de_Usuario', 'Alias', 'rol', 'Avatar','gmail', 'Sexo', 'Nota' , 'Fecha_nacimiento' , ]
+        fields = ['id', 'Nombre_de_Usuario', 'Alias', 'rol', 'Avatar', 'gmail', 'Sexo', 'Nota', 'Fecha_nacimiento']
         read_only_fields = ['gmail', 'rol']
 
+    def get_Avatar(self, obj):
+        # Si el usuario tiene una foto, devolvemos la URL de Cloudinary
+        if obj.Avatar:
+            return obj.Avatar.url
+        # Si no tiene, devolvemos null (o podrías poner una URL de imagen por defecto)
+        return None
 class StudentRegisterSerializer(serializers.ModelSerializer):
     password = serializers.CharField(write_only=True)
 
