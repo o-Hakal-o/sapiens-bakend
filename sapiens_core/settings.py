@@ -12,7 +12,8 @@ https://docs.djangoproject.com/en/6.0/ref/settings/
 
 from pathlib import Path
 import os
-import dj_database_url 
+import dj_database_url
+import cloudinary
 
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
@@ -64,6 +65,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'cloudinary',
     'django_extensions',
     'rest_framework',
     'sapiens_users',
@@ -71,7 +73,7 @@ INSTALLED_APPS = [
     'sapiens_articulos',
     'rest_framework.authtoken',
     'rest_framework_simplejwt',
-    'cloudinary',
+    
     
     
 ]
