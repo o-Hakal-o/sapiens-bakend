@@ -14,6 +14,8 @@ from pathlib import Path
 import os
 import dj_database_url
 import cloudinary
+from datetime import timedelta
+
 
 REST_FRAMEWORK = {
     'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
@@ -143,6 +145,23 @@ AUTH_PASSWORD_VALIDATORS = [
         'NAME': 'django.contrib.auth.password_validation.NumericPasswordValidator',
     },
 ]
+
+
+
+SIMPLE_JWT = {
+    # Tiempo de vida del Access Token (el que se usa para las peticiones)
+    'ACCESS_TOKEN_LIFETIME': timedelta(minutes=30), 
+    
+    # Tiempo de vida del Refresh Token (el que se usa para obtener nuevos Access Tokens)
+    'REFRESH_TOKEN_LIFETIME': timedelta(days=1),
+    
+    # Otras configuraciones recomendadas
+    'ROTATE_REFRESH_TOKENS': False,
+    'BLACKLIST_AFTER_ROTATION': False,
+    'ALGORITHM': 'HS256',
+    'SIGNING_KEY': 'django-insecure-hb*^)#e%!_mfba1di3lsm@%eu@0z0mf6ig+o#27_hz!z38#rdb', 
+    'AUTH_HEADER_TYPES': ('Bearer',),
+}
 
 
 # Internationalization
