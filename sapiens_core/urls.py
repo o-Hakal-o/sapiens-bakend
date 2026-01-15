@@ -19,10 +19,10 @@ from django.urls import path , include
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 
 urlpatterns = [
-    # Corregimos la ruta del admin (debe ser simple)
+   
     path('admin/', admin.site.urls), 
     
-    # Ahora 'include' funcionará correctamente
+    
     path('api/', include('sapiens_users.urls')),
     path('api/', include('sapiens_articulos.urls')),
     path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
