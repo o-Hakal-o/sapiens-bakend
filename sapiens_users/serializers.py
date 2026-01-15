@@ -101,6 +101,10 @@ class StudentRegisterSerializer(serializers.ModelSerializer):
         )
         
         return user
+    
+    
+
+User = get_user_model()
 
 class LoginSerializer(serializers.Serializer):
     gmail = serializers.EmailField()
