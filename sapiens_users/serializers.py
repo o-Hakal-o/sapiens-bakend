@@ -3,6 +3,7 @@ from .models import User
 from django.contrib.auth import authenticate
 from rest_framework import serializers
 from django.contrib.auth import get_user_model
+from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
 import re
 
 class UserProfileSerializer(serializers.ModelSerializer):
