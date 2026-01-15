@@ -1,6 +1,7 @@
-from django.urls import path
+from django.urls import path, include
 from .views import StudentRegisterView, LoginView, UserProfileView
 from drf_spectacular.views import SpectacularAPIView, SpectacularSwaggerView
+from django.contrib import admin
 urlpatterns = [
     path('register/student/', StudentRegisterView.as_view(), name='student-register'),
     path('login/', LoginView.as_view(), name='login'),
