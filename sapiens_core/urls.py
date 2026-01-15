@@ -23,6 +23,8 @@ urlpatterns = [
     
     # Ahora 'include' funcionará correctamente
     path('api/', include('sapiens_users.urls')),
-    path('api/', include('sapiens_articulos.urls')), 
+    path('api/', include('sapiens_articulos.urls')),
+    path('api/schema/', SpectacularAPIView.as_view(), name='schema'),
+    path('api/docs/', SpectacularSwaggerView.as_view(url_name='schema'), name='swagger-ui'), 
      
 ]

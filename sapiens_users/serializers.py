@@ -1,6 +1,9 @@
 from rest_framework import serializers
 from .models import User
 from django.contrib.auth import authenticate
+from rest_framework import serializers
+from django.contrib.auth import get_user_model
+import re
 
 class UserProfileSerializer(serializers.ModelSerializer):
     # Al usar ImageField aquí, habilitamos de nuevo la carga de archivos
@@ -19,9 +22,7 @@ class UserProfileSerializer(serializers.ModelSerializer):
             representation['Avatar'] = instance.Avatar.url
         return representation
     
-from rest_framework import serializers
-from django.contrib.auth import get_user_model
-import re
+
 
 User = get_user_model()
 
@@ -105,8 +106,31 @@ class LoginSerializer(serializers.Serializer):
     password = serializers.CharField(write_only=True)
 
     def validate(self, data):
-        # authenticate usa el USERNAME_FIELD definido en el modelo (gmail)
-        user = authenticate(username=data.get('gmail'), password=data.get('password'))
-        if user and user.is_active:
-            return user
-        raise serializers.ValidationError("Credenciales incorrectas")
+        gmail = data.get('gmail')
+        password = data.get('password')
+
+        # 1. Primero verificamos si el correo existe en la base de datos
+        user_exists = User.objects.filter(gmail=gmail).first()
+
+        if not user_exists:
+            # Enviamos el error específicamente al campo 'gmail'
+            raise serializers.ValidationError({
+                "gmail": "No existe ninguna cuenta vinculada a este correo electrónico."
+            })
+
+        # 2. Si el correo existe, intentamos autenticar con la contraseña
+        user = authenticate(username=gmail, password=password)
+
+        if user is None:
+            # Si authenticate devuelve None pero el usuario existe, el error es la contraseña
+            raise serializers.ValidationError({
+                "password": "La contraseña ingresada es incorrecta."
+            })
+
+        # 3. Finalmente verificamos si la cuenta está activa
+        if not user.is_active:
+            raise serializers.ValidationError({
+                "non_field_errors": "Esta cuenta de usuario ha sido desactivada."
+            })
+
+        return user
